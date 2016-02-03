@@ -11,14 +11,29 @@ var imagemin = require('gulp-imagemin');
 var cache = require('gulp-cache');
 var del = require('del');
 var runSequence = require('run-sequence');
-
-// Basic Gulp task syntax
-gulp.task('hello', function() {
-  console.log('Hello Zell!');
-})
+var htmlmin = require('gulp-htmlmin');
+var extname = require('gulp-extname');
+var assemble = require('assemble');
+var app = assemble();
 
 // Development Tasks 
 // -----------------
+
+gulp.task('load', function(cb) {
+  app.src('app/templates/**/*.hbs');
+  app.partials('app/templates/partials/*.hbs');
+  app.layouts('app/templates/layouts/*.hbs');
+  app.pages('app/templates/pages/**/*.hbs');
+  cb();
+});
+
+gulp.task('assemble', ['load'], function() {
+  return app.toStream('pages')
+    .pipe(app.renderFile())
+    .pipe(htmlmin())
+    .pipe(extname())
+    .pipe(app.dest('app'));
+});
 
 // Start browserSync server
 gulp.task('browserSync', function() {
@@ -42,6 +57,7 @@ gulp.task('sass', function() {
 gulp.task('watch', function() {
   gulp.watch('app/scss/**/*.scss', ['sass']);
   gulp.watch('app/*.html', browserSync.reload);
+  gulp.watch('app/templates/**/*.hbs', ['assemble']);
   gulp.watch('app/js/**/*.js', browserSync.reload);
 })
 
@@ -74,6 +90,12 @@ gulp.task('fonts', function() {
     .pipe(gulp.dest('dist/fonts'))
 })
 
+// Copying html 
+gulp.task('html', function() {
+  return gulp.src('app/**/*.html')
+    .pipe(gulp.dest('dist'))
+})
+
 // Cleaning 
 gulp.task('clean', function() {
   return del.sync('dist').then(function(cb) {
@@ -89,7 +111,7 @@ gulp.task('clean:dist', function() {
 // ---------------
 
 gulp.task('default', function(callback) {
-  runSequence(['sass', 'browserSync', 'watch'],
+  runSequence(['assemble', 'sass', 'browserSync', 'watch'],
     callback
   )
 })
@@ -97,7 +119,7 @@ gulp.task('default', function(callback) {
 gulp.task('build', function(callback) {
   runSequence(
     'clean:dist',
-    ['sass', 'useref', 'images', 'fonts'],
+    ['assemble', 'html', 'sass', 'useref', 'images', 'fonts'],
     callback
   )
 })
