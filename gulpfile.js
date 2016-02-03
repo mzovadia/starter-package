@@ -16,6 +16,7 @@ var extname = require('gulp-extname');
 var assemble = require('assemble');
 var app = assemble();
 
+
 // Development Tasks 
 // -----------------
 
@@ -67,7 +68,7 @@ gulp.task('watch', function() {
 // Optimizing CSS and JavaScript 
 gulp.task('useref', function() {
 
-  return gulp.src('app/*.html')
+  return gulp.src('app/**/*.html')
     .pipe(useref())
     .pipe(gulpIf('*.js', uglify()))
     .pipe(gulpIf('*.css', cssnano()))
@@ -88,12 +89,6 @@ gulp.task('images', function() {
 gulp.task('fonts', function() {
   return gulp.src('app/fonts/**/*')
     .pipe(gulp.dest('dist/fonts'))
-})
-
-// Copying html 
-gulp.task('html', function() {
-  return gulp.src('app/**/*.html')
-    .pipe(gulp.dest('dist'))
 })
 
 // Cleaning 
@@ -119,7 +114,7 @@ gulp.task('default', function(callback) {
 gulp.task('build', function(callback) {
   runSequence(
     'clean:dist',
-    ['assemble', 'html', 'sass', 'useref', 'images', 'fonts'],
+    ['assemble', 'sass', 'useref', 'images', 'fonts'],
     callback
   )
 })

@@ -1,3 +1,6 @@
-.testing {
-  width: percentage(5/7);
+@import 'init';
+
+.wrap {
+	@include container();
+	height: 100vh;
 }
