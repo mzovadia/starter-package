@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var notify = require('gulp-notify');
+var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var sourcemaps = require('gulp-sourcemaps');
@@ -30,9 +32,13 @@ gulp.task('load', function(cb) {
 
 gulp.task('assemble', ['load'], function() {
   return app.toStream('pages')
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
     .pipe(app.renderFile())
     .pipe(htmlmin())
     .pipe(extname())
+    .pipe(plumber.stop())
     .pipe(app.dest('app'));
 });
 
@@ -47,6 +53,9 @@ gulp.task('browserSync', function() {
 
 gulp.task('sass', function() {
   return gulp.src('app/scss/**/*.scss') // Gets all files ending with .scss in app/scss and children dirs
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
     .pipe(sass()) // Passes it through a gulp-sass
     .pipe(gulp.dest('app/css')) // Outputs it in the css folder
     .pipe(browserSync.reload({ // Reloading with Browser Sync
@@ -69,9 +78,13 @@ gulp.task('watch', function() {
 gulp.task('useref', function() {
 
   return gulp.src('app/**/*.html')
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
     .pipe(useref())
     .pipe(gulpIf('*.js', uglify()))
     .pipe(gulpIf('*.css', cssnano()))
+    .pipe(plumber.stop())
     .pipe(gulp.dest('dist'));
 });
 
@@ -113,8 +126,7 @@ gulp.task('default', function(callback) {
 
 gulp.task('build', function(callback) {
   runSequence(
-    'clean:dist',
-    ['assemble', 'sass', 'useref', 'images', 'fonts'],
+    'clean:dist', ['assemble', 'sass', 'useref', 'images', 'fonts'],
     callback
   )
 })
