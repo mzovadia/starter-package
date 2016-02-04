@@ -102,7 +102,7 @@ gulp.task('fonts', function() {
     .pipe(gulp.dest('dist/fonts'))
 })
 
-// Copying js 
+// Copying js to .tmp 
 gulp.task('copy-js', function() {
   return gulp.src('app/js/**/*')
     .pipe(gulp.dest('.tmp/js'))
