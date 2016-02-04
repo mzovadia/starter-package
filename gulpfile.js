@@ -18,7 +18,6 @@ var extname = require('gulp-extname');
 var assemble = require('assemble');
 var app = assemble();
 
-
 // Development Tasks 
 // -----------------
 
@@ -39,14 +38,14 @@ gulp.task('assemble', ['load'], function() {
     .pipe(htmlmin())
     .pipe(extname())
     .pipe(plumber.stop())
-    .pipe(app.dest('app'));
+    .pipe(app.dest('.tmp'));
 });
 
 // Start browserSync server
 gulp.task('browserSync', function() {
   browserSync({
     server: {
-      baseDir: 'app'
+      baseDir: '.tmp'
     }
   })
 })
@@ -57,7 +56,7 @@ gulp.task('sass', function() {
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
     .pipe(sass()) // Passes it through a gulp-sass
-    .pipe(gulp.dest('app/css')) // Outputs it in the css folder
+    .pipe(gulp.dest('.tmp/css')) // Outputs it in the css folder
     .pipe(browserSync.reload({ // Reloading with Browser Sync
       stream: true
     }));
@@ -66,9 +65,9 @@ gulp.task('sass', function() {
 // Watchers
 gulp.task('watch', function() {
   gulp.watch('app/scss/**/*.scss', ['sass']);
-  gulp.watch('app/*.html', browserSync.reload);
+  gulp.watch('.tmp/**/*.html', browserSync.reload);
   gulp.watch('app/templates/**/*.hbs', ['assemble']);
-  gulp.watch('app/js/**/*.js', browserSync.reload);
+  gulp.watch('app/js/**/*.js', ['copy-js', browserSync.reload]);
 })
 
 // Optimization Tasks 
@@ -76,8 +75,7 @@ gulp.task('watch', function() {
 
 // Optimizing CSS and JavaScript 
 gulp.task('useref', function() {
-
-  return gulp.src(['app/**/*.html'], { base: './app/' })
+  return gulp.src(['.tmp/**/*.html'])
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
@@ -104,6 +102,12 @@ gulp.task('fonts', function() {
     .pipe(gulp.dest('dist/fonts'))
 })
 
+// Copying js 
+gulp.task('copy-js', function() {
+  return gulp.src('app/js/**/*')
+    .pipe(gulp.dest('.tmp/js'))
+})
+
 // Cleaning 
 gulp.task('clean', function() {
   return del.sync('dist').then(function(cb) {
@@ -119,14 +123,14 @@ gulp.task('clean:dist', function() {
 // ---------------
 
 gulp.task('default', function(callback) {
-  runSequence(['assemble', 'sass', 'browserSync', 'watch'],
+  runSequence(['assemble', 'sass', 'copy-js', 'browserSync', 'watch'],
     callback
   )
 })
 
 gulp.task('build', function(callback) {
   runSequence(
-    'clean:dist', ['assemble', 'sass', 'useref', 'images', 'fonts'],
+    'clean:dist', ['assemble', 'sass', 'images', 'fonts'], 'useref',
     callback
   )
 })
