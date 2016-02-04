@@ -77,7 +77,7 @@ gulp.task('watch', function() {
 // Optimizing CSS and JavaScript 
 gulp.task('useref', function() {
 
-  return gulp.src('app/**/*.html')
+  return gulp.src(['app/**/*.html'], { base: './app/' })
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
