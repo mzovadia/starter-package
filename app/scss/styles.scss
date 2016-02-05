@@ -6,3 +6,12 @@
 	@include container();
 	height: 100vh;
 }
+
+.header {
+	background: #ccc;
+	padding: 1em gutter();
+}
+
+.main-nav-links {
+	@include scut-list-inline(2em);
+}

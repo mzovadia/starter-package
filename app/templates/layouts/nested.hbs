@@ -12,7 +12,7 @@
   <title>{{title}}</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
- <!--build:css /css/styles.min.css-->
+  <!--build:css /css/styles.min.css-->
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/print.css">
   <!--endbuild-->
@@ -20,9 +20,11 @@
 
 <body>
 
-<div class="wrap">
-  {% body %}
-</div>
+  <div class="wrap">
+
+    {{>header}} {% body %} {{>footer}}
+
+  </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script>

@@ -1,5 +1,11 @@
+body {
+	background: rgba(0,0,255,.2);
+	margin: 0;
+}
+
 .lorem {
-	@include span(9);
+	@include span(9 wide);
+	margin-right: 0;
 	padding: gutter();
 }
 
@@ -7,4 +13,10 @@
 	@include span(3 last);
 	background: #eee;
 	padding: gutter();
+}
+
+footer {
+	background: #ccc;
+	clear: both;
+	padding: 1em gutter();
 }
