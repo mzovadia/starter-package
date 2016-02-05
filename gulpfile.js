@@ -44,6 +44,7 @@ gulp.task('assemble', ['load'], function() {
 // Start browserSync server
 gulp.task('browserSync', function() {
   browserSync({
+    injectChanges: true,
     server: {
       baseDir: '.tmp'
     }

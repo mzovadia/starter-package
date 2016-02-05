@@ -8,13 +8,14 @@
 
 $susy:(
   columns: 12,
+  gutters: .5,
   global-box-sizing: border-box, 
   debug: (image:show)
 );
 
 .content {
-	background: #eee;
+	background: #fff;
 	@include span(10);
 	margin-left: span(1 wide last);
-	padding: gutter();
+	margin-right: 0;
 }

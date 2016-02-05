@@ -1,5 +1,7 @@
 @import 'init';
 
+@import 'layout';
+
 .wrap {
 	@include container();
 	height: 100vh;

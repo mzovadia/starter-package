@@ -1,0 +1,10 @@
+.lorem {
+	@include span(9);
+	padding: gutter();
+}
+
+.ipsum {
+	@include span(3 last);
+	background: #eee;
+	padding: gutter();
+}
