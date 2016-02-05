@@ -96,10 +96,22 @@ gulp.task('images', function() {
     .pipe(gulp.dest('dist/images'))
 });
 
+// Copying images to .tmp
+gulp.task('copy-img', function() {
+  return gulp.src('app/images/**/*')
+    .pipe(gulp.dest('.tmp/images'))
+})
+
 // Copying fonts 
 gulp.task('fonts', function() {
   return gulp.src('app/fonts/**/*')
     .pipe(gulp.dest('dist/fonts'))
+})
+
+// Copying fonts to .tmp
+gulp.task('copy-fonts', function() {
+  return gulp.src('app/fonts/**/*')
+    .pipe(gulp.dest('.tmp/fonts'))
 })
 
 // Copying js to .tmp 
@@ -124,6 +136,12 @@ gulp.task('clean:dist', function() {
 
 gulp.task('default', function(callback) {
   runSequence(['assemble', 'sass', 'copy-js', 'browserSync', 'watch'],
+    callback
+  )
+})
+
+gulp.task('assets', function(callback) {
+  runSequence(['copy-fonts', 'copy-img'],
     callback
   )
 })
