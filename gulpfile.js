@@ -60,14 +60,11 @@ gulp.task('sass', function() {
     .pipe(sass()) // Passes it through a gulp-sass
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('.tmp/css')) // Outputs it in the css folder
-    .pipe(browserSync.reload({ // Reloading with Browser Sync
-      stream: true
-    }));
 })
 
 // Watchers
 gulp.task('watch', function() {
-  gulp.watch('app/scss/**/*.scss', ['sass']);
+  gulp.watch('app/scss/**/*.scss', ['sass', browserSync.reload]);
   gulp.watch('.tmp/**/*.html', browserSync.reload);
   gulp.watch('app/templates/**/*.hbs', ['assemble']);
   gulp.watch('app/js/**/*.js', ['copy-js', browserSync.reload]);
