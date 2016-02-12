@@ -1,0 +1,9 @@
+.main-nav {
+	@include span(10);
+	margin-left: span(1 wide);
+}
+
+.main-nav-links {
+	@include scut-list-inline(2em);
+	float: right;
+}

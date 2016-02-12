@@ -16,6 +16,6 @@ $susy:(
 .content {
 	background: #fff;
 	@include span(10);
-	margin-left: span(1 wide last);
+	margin-left: span(1 wide);
 	margin-right: 0;
 }

@@ -2,23 +2,16 @@
 
 @import 'layout';
 
+@import 'nav';
+
+@import 'header';
+
+@import 'footer';
+
 .wrap {
 	@include container();
 	height: 100vh;
 }
 
-.header {
-	@include scut-clearfix;
-	background: #ccc;
-	padding: 1em 0;
-}
 
-.main-nav {
-	@include span(10);
-	margin-left: span(1 wide);
-}
 
-.main-nav-links {
-	@include scut-list-inline(2em);
-	float: right;
-}
