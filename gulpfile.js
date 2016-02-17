@@ -58,6 +58,7 @@ gulp.task('sass', function() {
     }))
     .pipe(sourcemaps.init())
     .pipe(sass()) // Passes it through a gulp-sass
+    .pipe(autoprefixer())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('.tmp/css')) // Outputs it in the css folder
 })
