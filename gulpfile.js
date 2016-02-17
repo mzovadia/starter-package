@@ -17,6 +17,8 @@ var htmlmin = require('gulp-htmlmin');
 var extname = require('gulp-extname');
 var assemble = require('assemble');
 var app = assemble();
+var styleguide = require('sc5-styleguide');
+var outputPath = '.tmp/styleguide';
 
 // Development Tasks 
 // -----------------
@@ -42,14 +44,14 @@ gulp.task('assemble', ['load'], function() {
 });
 
 // Start browserSync server
-gulp.task('browserSync', function() {
-  browserSync({
-    injectChanges: true,
-    server: {
-      baseDir: '.tmp'
-    }
-  })
-})
+// gulp.task('browserSync', function() {
+//   browserSync({
+//     injectChanges: true,
+//     server: {
+//       baseDir: '.tmp'
+//     }
+//   })
+// })
 
 gulp.task('sass', function() {
   return gulp.src('app/scss/**/*.scss') // Gets all files ending with .scss in app/scss and children dirs
@@ -63,6 +65,28 @@ gulp.task('sass', function() {
     .pipe(gulp.dest('.tmp/css')) // Outputs it in the css folder
 })
 
+// Styleguide Tasks
+
+gulp.task('styleguide:generate', function() {
+  return gulp.src('app/scss/**/*.scss')
+    .pipe(styleguide.generate({
+        title: 'My Styleguide',
+        server: true,
+        rootPath: outputPath,
+        overviewPath: 'README.md'
+      }))
+    .pipe(gulp.dest(outputPath));
+});
+
+gulp.task('styleguide:applystyles', function() {
+  return gulp.src('styles.scss')
+    .pipe(sass({
+      errLogToConsole: true
+    }))
+    .pipe(styleguide.applyStyles())
+    .pipe(gulp.dest(outputPath));
+});
+
 // Watchers
 gulp.task('watch', function() {
   gulp.watch('app/scss/**/*.scss', ['sass', browserSync.reload]);
@@ -70,6 +94,7 @@ gulp.task('watch', function() {
   gulp.watch('app/templates/**/*.hbs', ['assemble']);
   gulp.watch('app/js/**/*.js', ['copy-js', browserSync.reload]);
 })
+
 
 // Optimization Tasks 
 // ------------------
@@ -153,3 +178,6 @@ gulp.task('build', function(callback) {
     callback
   )
 })
+
+
+gulp.task('styleguide', ['styleguide:generate', 'styleguide:applystyles']);

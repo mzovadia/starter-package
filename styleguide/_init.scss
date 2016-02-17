@@ -1,0 +1,21 @@
+@import 'bower_components/scut/dist/scut';
+@include scut-reset;
+@import 'bower_components/susy/sass/susy';
+@import 'bower_components/compass-breakpoint/stylesheets/breakpoint';
+@import 'bower_components/typeplate-starter-kit/scss/typeplate';
+
+@include border-box-sizing;
+
+$susy:(
+  columns: 12,
+  gutters: .5,
+  global-box-sizing: border-box, 
+  debug: (image:show)
+);
+
+.content {
+	background: #fff;
+	@include span(10);
+	margin-left: span(1 wide);
+	margin-right: 0;
+}

@@ -1,0 +1,11 @@
+footer {
+	@include scut-clearfix;
+	background: #ccc;
+	clear: both;
+	padding: 1em gutter();
+}
+
+.footer-content {
+	@include span(10 wider);
+	margin-left: span(1);
+}
