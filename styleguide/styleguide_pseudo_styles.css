@@ -1,0 +1,11 @@
+p.pseudo-class-first-of-type {
+  margin-top: 0;
+}
+
+p.pseudo-class-last-of-type {
+  margin-bottom: 0;
+}
+
+abbr[title].pseudo-class-hover {
+  cursor: help;
+}

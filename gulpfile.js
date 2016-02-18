@@ -59,7 +59,6 @@ gulp.task('sass', function() {
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
-    .pipe(styleguide.applyStyles())
     .pipe(sourcemaps.init())
     .pipe(sass()) // Passes it through a gulp-sass
     .pipe(autoprefixer())
@@ -84,7 +83,7 @@ gulp.task('styleguide:generate', function() {
 });
 
 gulp.task('styleguide:applystyles', function() {
-  return gulp.src('styles.scss')
+  return gulp.src('app/scss/styles.scss')
     .pipe(sass({
       errLogToConsole: true
     }))
@@ -93,8 +92,9 @@ gulp.task('styleguide:applystyles', function() {
 });
 
 // Watchers
-gulp.task('watch', function() {
+gulp.task('watch', ['styleguide'], function() {
   gulp.watch('app/scss/**/*.scss', ['sass', browserSync.reload]);
+  gulp.watch(['app/scss/**/*.scss'], ['styleguide']);
   gulp.watch('.tmp/**/*.html', browserSync.reload);
   gulp.watch('app/templates/**/*.hbs', ['assemble']);
   gulp.watch('app/js/**/*.js', ['copy-js', browserSync.reload]);
@@ -103,7 +103,7 @@ gulp.task('watch', function() {
 // gulp.task('watch', ['styleguide'], function() {
 //   // Start watching changes and update style guide whenever changes are detected
 //   // Style guide automatically detects existing server instance
-//   gulp.watch(['*.scss'], ['styleguide']);
+//   gulp.watch(['app/scss/**/*.scss'], ['styleguide']);
 // });
 
 
