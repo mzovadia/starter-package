@@ -18,7 +18,7 @@ var extname = require('gulp-extname');
 var assemble = require('assemble');
 var app = assemble();
 var styleguide = require('sc5-styleguide');
-var outputPath = '.tmp/styleguide';
+var outputPath = 'styleguide';
 
 // Development Tasks 
 // -----------------
@@ -43,21 +43,23 @@ gulp.task('assemble', ['load'], function() {
     .pipe(app.dest('.tmp'));
 });
 
-// Start browserSync server
-// gulp.task('browserSync', function() {
-//   browserSync({
-//     injectChanges: true,
-//     server: {
-//       baseDir: '.tmp'
-//     }
-//   })
-// })
+//Start browserSync server
+gulp.task('browserSync', function() {
+  browserSync({
+    injectChanges: true,
+    server: {
+      baseDir: '.tmp',
+    }
+  })
+})
+
 
 gulp.task('sass', function() {
   return gulp.src('app/scss/**/*.scss') // Gets all files ending with .scss in app/scss and children dirs
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
+    .pipe(styleguide.applyStyles())
     .pipe(sourcemaps.init())
     .pipe(sass()) // Passes it through a gulp-sass
     .pipe(autoprefixer())
@@ -70,11 +72,14 @@ gulp.task('sass', function() {
 gulp.task('styleguide:generate', function() {
   return gulp.src('app/scss/**/*.scss')
     .pipe(styleguide.generate({
-        title: 'My Styleguide',
-        server: true,
-        rootPath: outputPath,
-        overviewPath: 'README.md'
-      }))
+      title: 'My Styleguide',
+      port: 8080,
+      server: {
+        baseDir: 'styleguide'
+      },
+      rootPath: outputPath,
+      overviewPath: 'README.md'
+    }))
     .pipe(gulp.dest(outputPath));
 });
 
@@ -94,6 +99,12 @@ gulp.task('watch', function() {
   gulp.watch('app/templates/**/*.hbs', ['assemble']);
   gulp.watch('app/js/**/*.js', ['copy-js', browserSync.reload]);
 })
+
+// gulp.task('watch', ['styleguide'], function() {
+//   // Start watching changes and update style guide whenever changes are detected
+//   // Style guide automatically detects existing server instance
+//   gulp.watch(['*.scss'], ['styleguide']);
+// });
 
 
 // Optimization Tasks 
