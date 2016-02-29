@@ -2,8 +2,9 @@
 //
 // Indicate failure or success. <em>Required: `alert-success` or `alert-error`</em>
 //
-// Markup: <header class="header {$modifiers}">You mistyped your password.</div>
-//
+// Markup: <header class="header {$modifiers}">You mistyped your password.</header>
+//	
+// .header - Default
 // .header-error - Indicate an error
 // .header-success - Indicate success
 //
