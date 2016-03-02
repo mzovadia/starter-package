@@ -5,21 +5,21 @@
 // Markup: <header class="header {$modifiers}">You mistyped your password.</header>
 //	
 // .header - Default
-// .header-error - Indicate an error
-// .header-success - Indicate success
+// .header--error - Indicate an error
+// .header--success - Indicate success
 //
-// Styleguide 1.0
+// Styleguide 1.1
 
 .header {
 	@include scut-clearfix;
-	background: #ccc;
+	background: $test;
 	padding: 1em 0;
 }
 
-.header-error {
-	background: #000000;
+.header--error {
+	background: #d0021b;
 }
 
-.header-success {
-	background: red;
+.header--success {
+	background: #417505;
 }

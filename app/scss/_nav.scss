@@ -1,3 +1,15 @@
+
+
+// Nav
+//
+// Indicate failure or success. <em>Required: `alert-success` or `alert-error`</em>
+//
+// Markup: <div class="main-nav {$modifiers}">You mistyped your password.</div>
+//	
+// .main-nav - Default
+//
+// Styleguide 1
+
 .main-nav {
 	@include span(10);
 	margin-left: span(1 wide);

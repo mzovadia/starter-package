@@ -416,18 +416,18 @@ body {
     margin-left: 2em; }
 
 .header {
-  background: #ccc;
+  background: #eee;
   padding: 1em 0; }
   .header:after {
     content: "";
     display: table;
     clear: both; }
 
-.header-error {
-  background: #000000; }
+.header--error {
+  background: #d0021b; }
 
-.header-success {
-  background: red; }
+.header--success {
+  background: #417505; }
 
 footer {
   background: #ccc;
