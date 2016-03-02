@@ -1,6 +1,6 @@
 {
   "name": "Static Site Starter Kit",
-  "description": "Includes Susy, Breakpoint and Scut",
+  "description": "Includes Susy, Breakpoint, Scut and Styleguide",
   "main": "index.js",
   "authors": [
     "Micah Ovadia"
