@@ -401,6 +401,12 @@ angular.module('sgApp')
     $scope.config = Styleguide.config;
     $scope.status = Styleguide.status;
     $scope.variables = Variables.variables;
+    $scope.toggleMenu = false;
+
+    $scope.toggleBool = function(toggleMenu) {
+      $scope.toggleMenu = !toggleMenu;
+      return $scope.toggleMenu;
+    };
 
     // Bind variable to scope to wait for data to be resolved
     $scope.socketService = Socket;
@@ -416,6 +422,17 @@ angular.module('sgApp')
       return function(section) {
         return new RegExp('^' + parentSection.reference + '\.[A-Za-z0-9_-]+$').test(section.reference);
       };
+    };
+
+    $scope.hasSubsections = function(parentSection) {
+      var result = false;
+      angular.forEach($scope.sections.data, function(section) {
+        if(parentSection.reference === section.parentReference) {
+          result = true;
+          return;
+        }
+      });
+      return result;
     };
 
     // Toggle all markup boxes visible/hidden state
@@ -481,6 +498,10 @@ angular.module('sgApp')
       }
     }
 
+    $scope.isMainSection = function(section) {
+      return section.reference.indexOf('.') === -1;
+    };
+
     $scope.isEmptyMainSection = function(section) {
       return section.reference.indexOf('.') === -1 && !section.renderMarkup && (!section.modifiers || section.modifiers.length === 0);
     };
@@ -496,6 +517,9 @@ angular.module('sgApp')
       }
       if ($scope.currentSection === 'all') {
         return true;
+      }
+      if ($scope.currentSection.indexOf('.') === -1) {
+        return new RegExp('^' + $scope.currentSection + '(\\{D}|$)').test(section.reference);
       }
       return new RegExp('^' + $scope.currentSection + '(\\D|$)').test(section.reference);
     };

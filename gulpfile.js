@@ -19,6 +19,7 @@ var assemble = require('assemble');
 var app = assemble();
 var styleguide = require('sc5-styleguide');
 var outputPath = 'styleguide';
+var merge = require('merge-stream');
 
 // Development Tasks 
 // -----------------
@@ -124,19 +125,20 @@ gulp.task('useref', function() {
 });
 
 // Optimizing Images 
-gulp.task('images', function() {
-  return gulp.src('app/images/**/*.+(png|jpg|jpeg|gif|svg)')
-    // Caching images that ran through imagemin
-    .pipe(cache(imagemin({
-      interlaced: true,
-    })))
-    .pipe(gulp.dest('dist/images'))
+
+gulp.task('images:tmp', function() {
+  var stream1 = gulp.src('app/templates/pages/**/*.{png,jpg,gif,svg}')
+                  .pipe(cache(imagemin({interlaced: true})))
+                  .pipe(gulp.dest('.tmp'));            
+  var stream2 = gulp.src('app/images/**/*.{png,jpg,gif,svg}',{base: 'app/'})
+                  .pipe(cache(imagemin({interlaced: true})))
+                  .pipe(gulp.dest('.tmp'));            
+  return merge(stream1,stream2);
 });
 
-// Copying images to .tmp
-gulp.task('copy-img', function() {
-  return gulp.src('app/images/**/*')
-    .pipe(gulp.dest('.tmp/images'))
+gulp.task('images:dist', function() {
+  return gulp.src('.tmp/**/*.{png,jpg,gif,svg}')
+    .pipe(gulp.dest('dist'))
 })
 
 // Copying fonts 
@@ -168,11 +170,15 @@ gulp.task('clean:dist', function() {
   return del.sync(['dist/**/*', '!dist/images', '!dist/images/**/*']);
 });
 
+gulp.task('clean:tmp', function() {
+  return del.sync('.tmp/**/*');
+});
+
 // Build Sequences
 // ---------------
 
 gulp.task('default', function(callback) {
-  runSequence(['assemble', 'sass', 'copy-js', 'browserSync', 'watch'],
+  runSequence(['assemble', 'sass', 'copy-js', 'images:tmp', 'browserSync', 'watch'],
     callback
   )
 })
@@ -185,7 +191,7 @@ gulp.task('assets', function(callback) {
 
 gulp.task('build', function(callback) {
   runSequence(
-    'clean:dist', ['assemble', 'sass', 'images', 'fonts'], 'useref',
+    'clean:dist', ['assemble', 'sass', 'fonts', 'images:dist'], 'useref',
     callback
   )
 })

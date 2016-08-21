@@ -2,7 +2,7 @@
 /*
 * Scut, a collection of Sass utilities
 * to ease and improve our implementations of common style-code patterns.
-* v1.3.1
+* v1.4.0
 * Docs at http://davidtheclark.github.io/scut
 */
 html {
@@ -119,7 +119,7 @@ pre code {
   word-wrap: normal; }
 
 html {
-  font: normal 112.5% / 1.65 serif; }
+  font: normal 112.5%/1.65 serif; }
 
 body {
   -webkit-hyphens: auto;
@@ -377,8 +377,7 @@ p + .typl8-drop-cap {
   width: 82.85714%;
   float: left;
   margin-right: 2.85714%;
-  margin-left: 8.57143%;
-  margin-right: 0; }
+  margin-left: 8.57143%; }
 
 body {
   background: rgba(0, 0, 255, 0.2);
